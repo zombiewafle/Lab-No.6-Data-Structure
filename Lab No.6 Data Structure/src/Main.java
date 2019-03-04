@@ -58,8 +58,8 @@ public class Main {
         //---------------------------------------------------------------------------------------------------------------------
 
         //The file is being reading
-        Scanner input = new Scanner(System.in);
         System.out.println(menu);
+        Scanner input = new Scanner(System.in);
         String path = input.nextLine();
 
         if(path == null){
@@ -105,18 +105,23 @@ public class Main {
                     UserDeckOfCards = MappingFactory.SetType("HashMap");
                     System.out.println(menu2);
                     String op1 = sc.nextLine();
+
                     switch (Integer.parseInt(op1)){
                         case 1:
-                        Scanner scanner = new Scanner(userCard);
+                        System.out.println("Please enter a card name");
+                        Scanner cardInput = new Scanner(System.in);
+                        String cardsFinding  =  cardInput.nextLine();
+                        UserDeckOfCards.put(userCard.toUpperCase(), Deck.get(userCard.toUpperCase()));
                         if(!Deck.containsKey(userCard.toUpperCase())){
                             System.out.println("The card tat you enter does not exist");
-                            UserDeckOfCards.put(userCard.toUpperCase(), Deck.get(userCard.toUpperCase()));
                             break;
-                    }
+                        }
+                        break;
+
                         case 2:
+                            System.out.println(UserDeckOfCards.get(userCard.toUpperCase()));
                             if(!UserDeckOfCards.containsKey(userCard.toUpperCase())){
                                 System.out.println("The card tat you enter does not exist");
-                                System.out.println(UserDeckOfCards.get(userCard.toUpperCase()));
                                 break;
                             }
 
