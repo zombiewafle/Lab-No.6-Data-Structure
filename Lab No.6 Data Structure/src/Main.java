@@ -94,7 +94,8 @@ public class Main {
         */
 
         //------------------------------------------------------------------
-
+        
+        //Note: The second menu it repeats in the three mapping method.
         if(go1 == true){
             System.out.println(menu1);
             String op = sc.nextLine();
@@ -193,6 +194,7 @@ public class Main {
                             for(String Value: Deck.values()){
                                 AllExistingValues.add(Value);
                             }
+                            //This method go over the all deck, and search for the card that the user enter.
                             for(int i = 0; i <=3; i++){
                                 for(int n = 0; n < AllExistingValues.size(); n++){
                                     switch (i){
@@ -214,6 +216,7 @@ public class Main {
                                 }
                             }
                             break;
+                            //The exit case
                         case 7:
                             System.out.println("Thanks for using it");
 
@@ -224,8 +227,10 @@ public class Main {
                 case 2:
                     Deck = MappingFactory.SetType("TreeMap");
                     UserDeckOfCards = MappingFactory.SetType("TreeMap");
+                    //Prints the second menu.
                     System.out.println(menu2);
                     String op2= sc.nextLine();
+                    //The whole options that the second menu have
                     switch (Integer.parseInt(op2)){
                         case 1:
                             Scanner scanner = new Scanner(userCard);
@@ -234,6 +239,7 @@ public class Main {
                                 UserDeckOfCards.put(userCard.toUpperCase(), Deck.get(userCard.toUpperCase()));
                                 break;
                             }
+                            //
                         case 2:
                             if(!UserDeckOfCards.containsKey(userCard.toUpperCase())){
                                 System.out.println("The card tat you enter does not exist");
