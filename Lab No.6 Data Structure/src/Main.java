@@ -1,5 +1,6 @@
 import Classes.Factory;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.nio.file.*;
 
@@ -13,6 +14,7 @@ public class Main {
         //--------------------------------------------
         //The creation of various variables
         boolean go1 = false;
+        boolean go2 = false;
         String operation = "";
         String userCard = "";
         //AbstractMap<String,String> map = null;
@@ -56,18 +58,30 @@ public class Main {
         //---------------------------------------------------------------------------------------------------------------------
 
         //The file is being reading
+        Scanner input = new Scanner(System.in);
+        System.out.println(menu);
+        String path = input.nextLine();
 
+        if(path == null){
+            System.out.println("No file found");
+            go1 = false;
+
+        }else{
+            ArrayList<String> card = new ArrayList<>();
+            card.add(path);
+            go1 = true;
+            System.out.println("The file it's being reading");
+        }
+
+        /*
         System.out.println(menu);
         String dir = sc.nextLine();
 
-        if(!dir.equals("0")){
+        if(!dir == null){
             try{
                 File fl = new File(dir);
                 Scanner scanner = new Scanner(fl);
 
-                while (scanner.hasNextLine()){
-                    operation += scanner.next();
-                }
                 System.out.println("Text was read");
                 go1 = true;
 
@@ -77,10 +91,11 @@ public class Main {
         }else {
             System.out.println("Thanks for using this program");
         }
+        */
 
         //------------------------------------------------------------------
 
-        if(go1){
+        if(go1 == true){
             System.out.println(menu1);
             String op = sc.nextLine();
 
@@ -408,10 +423,17 @@ public class Main {
                             System.out.println("Non valid option was choose");
                     }
                     break;
+
+                case 4:
+                    System.out.println("Godbye, and thanks for using my program!!!");
+                    break;
                 default:
                     System.out.println("Ingrese una opcion valida!!!");
                     return;
             }
+        }
+        else{
+            return;
         }
 
     }
