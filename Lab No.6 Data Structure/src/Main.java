@@ -9,14 +9,15 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //Manejo de archivos en java: escribir en un archivo de texto (.txt), (Octubre 2011). Extraido de: http://codigoprogramacion.com/cursos/java/130-manejo-de-archivos-en-java-escribir-en-un-archivo-de-texto-txt.html#.XHm8SLi7200
-        //Aqui se ingresa el archivo de texto, para luego ser leido.
+        //Manejo de archivos en java: escribir en un archivo de texto (.txt),
+        //(Octubre 2011). Extraido de:
+        //http://codigoprogramacion.com/cursos/java/130-manejo-de-archivos-en-java-escribir-en-un-archivo-de-texto-txt.html#.XHm8SLi7200
+
         //--------------------------------------------
         //The creation of various variables
         boolean go1 = false;
         boolean go2 = false;
-        String operation = "";
-        String userCard = "";
+        boolean contains = false;
         //AbstractMap<String,String> map = null;
         Scanner sc = new Scanner(System.in);
         //-------------------------------------------
@@ -27,17 +28,31 @@ public class Main {
         ArrayList<String> AllExistingValues = new ArrayList<>();
         //-------------------------------------------
         //ArrayLists to store the cards of the user in his deck, and the common deck.
+        Map<String,Integer> cardsQuantity = null;
         Map<String, String> Deck = null;
-        Map<String, String> UserDeckOfCards= null;
+        Map<String, String> UserDeckOfCards = null;
         Factory<String, String> MappingFactory = new Factory<>();
 
+        Map<String, String> sortedHashMapDeck = new HashMap<>(Deck);
+        Map<String, String> sortedTreeMapDeck = new TreeMap<>(Deck);
+        Map<String, String> sortedLinkedHashMapDeck = new LinkedHashMap<>(Deck);
+
+        Map<String, String> sortedHashMapUserDeck = new HashMap<>(UserDeckOfCards);
+        Map<String, String> sortedTreeMapUserDeck = new TreeMap<>(UserDeckOfCards);
+        Map<String, String> sortedLinkedHashMapUserDeck = new LinkedHashMap<>(UserDeckOfCards);
+        Integer typeOfMap = 0;
+
         //---------------------------------------------------------------------------------------------------------------------
+
+        /*---------------------------------------------------------------------------------------------------------------------
         //The first menu, that permits you enter a file.
         String menu = "!!!Welcome to this program, please enter a .txt file" +
                 "\n Enter the direction of the file.";
+        */
 
         //---------------------------------------------------------------------------------------------------------------------
         //The second menu, that permits you enter to one of the 3 map methods.
+        System.out.println("---------------------------------------------------------------------------------------------------");
         String menu1 = "Choose the method to proceed " +
                 "\nMenu:" +
                 "\n1. HashMap" +
@@ -47,31 +62,49 @@ public class Main {
 
         //---------------------------------------------------------------------------------------------------------------------
         //The third menu, that permits you to get access to one option.
+        System.out.println("---------------------------------------------------------------------------------------------------");
         String menu2 = "\nMenu:" +
                 "\n1. Add a card to the deck of cards." +
-                "\n2. Show the type of a card,  by the name and the type." +
-                "\n3. Show the name, type and quantity of a card, that the user have in his deck of cards." +
-                "\n4. Show the name, type and quantity of a card, that the user have in his deck, but order by type." +
-                "\n5. Show the name and the type of all the existent cards." +
-                "\n6. Show the name and the type of all the existent cards, but order by type.";
+                "\n2. Show the type of a card,  by the name of the card." +
+                "\n3. Show the name, type and quantity of all cards that the user have in his deck ." +
+                "\n4. Show the name, type and quantity of all cards, that the user have in his deck, but order by type." +
+                "\n5. Show the name and type of all existent cards in the deck." +
+                "\n6. Show the name and type of all existent cards, but order by type." +
+                "\n7. Exit";
 
         //---------------------------------------------------------------------------------------------------------------------
 
         //The file is being reading
-        System.out.println(menu);
-        Scanner input = new Scanner(System.in);
-        String path = input.nextLine();
-
-        if(path == null){
+        //How to open a text file and save it in ArrayList using Java,(2010). Extracted from: https://www.youtube.com/watch?v=HriXONQBo_U
+        BufferedReader input = null;
+        List<String> fileName = new ArrayList<String>();
+        boolean file = false;
+        //A try, catch, if file == null
+        //Note: Change the path to the users text path
+        try {
+            System.out.println("Thanks for using my program");
+            input = new BufferedReader(new FileReader("C:\\Users\\André Salazar\\IdeaProjects\\Lab No.6 Data Structure\\src\\lab.txt"));
+            String nm;
+            while ((nm = input.readLine()) != null) {
+                file = true;
+                fileName.add(nm);
+            }
+        } catch (Exception e) {
+            file = false;
             System.out.println("No file found");
-            go1 = false;
-
-        }else{
-            ArrayList<String> card = new ArrayList<>();
-            card.add(path);
-            go1 = true;
-            System.out.println("The file it's being reading");
         }
+        //Get the keys and the values from the .txt file and then split them by a ||.
+        for(int i = 0; i < fileName.size(); i++){
+            String[] keys = fileName.get(i).split(("  ||  "));
+            Keys.add(i, keys[0]);
+            Values.add(i, keys[1]);
+        }
+
+        //Put the keys and the values in the deck
+        for (int i = 0; i < Keys.size(); i++){
+            Deck.put(Keys.get(i), Values.get(i));
+        }
+
 
         /*
         System.out.println(menu);
@@ -94,358 +127,143 @@ public class Main {
         */
 
         //------------------------------------------------------------------
-        
-        //Note: The second menu it repeats in the three mapping method.
-        if(go1 == true){
-            System.out.println(menu1);
-            String op = sc.nextLine();
 
-            switch (Integer.parseInt(op)){
+
+        if (file == true) {
+            System.out.println("Please enter a valid option ");
+            System.out.println("-------------------------------------------------------------");
+            System.out.println(" ");
+            System.out.println(menu1);
+            System.out.println("  ");
+            System.out.println("-------------------------------------------------------------");
+
+            System.out.println("  ");
+            String op = sc.nextLine();
+            System.out.println("  ");
+
+            switch(Integer.parseInt(op)){
                 case 1:
+                    go1 = true;
+                    typeOfMap =1;
+                    System.out.println("Please an option");
                     Deck = MappingFactory.SetType("HashMap");
                     UserDeckOfCards = MappingFactory.SetType("HashMap");
+                    System.out.println("-------------------------------------------------------------");
+                    System.out.println(" ");
                     System.out.println(menu2);
-                    String op1 = sc.nextLine();
-
-                    switch (Integer.parseInt(op1)){
-                        case 1:
-                        System.out.println("Please enter a card name");
-                        Scanner cardInput = new Scanner(System.in);
-                        String cardsFinding  =  cardInput.nextLine();
-                        UserDeckOfCards.put(userCard.toUpperCase(), Deck.get(userCard.toUpperCase()));
-                        if(!Deck.containsKey(userCard.toUpperCase())){
-                            System.out.println("The card tat you enter does not exist");
-                            break;
-                        }
-                        break;
-
-                        case 2:
-                            System.out.println(UserDeckOfCards.get(userCard.toUpperCase()));
-                            if(!UserDeckOfCards.containsKey(userCard.toUpperCase())){
-                                System.out.println("The card tat you enter does not exist");
-                                break;
-                            }
-
-                        case 3:
-                            for(String Key : UserDeckOfCards.values()){
-                                Keys.add(Key);
-                            }
-                            for(String values : UserDeckOfCards.values()){
-                                Values.add(values);
-                            }
-                            Collections.sort(Values);
-                            for (int i = 0; i < Keys.size(); i++) {
-                                System.out.println("Key: " + Keys.get(i) + ", Value: " + Values.get(i));
-                            }
-                            System.out.println("User has: " + UserDeckOfCards.size() + " Cards");
-                            break;
-
-                        case 4:
-                            for(String Key: UserDeckOfCards.values()){
-                                Values.add(Key);
-                            }
-
-                            for(String Value: UserDeckOfCards.values()){
-                                Values.add(Value);
-                            }
-                            for(int j=0; j <=3; j++){
-                                for(int i = 0; i < Values.size();i++){
-                                    switch (j){
-                                        case 0:
-                                            if(Values.get(i).equals("Spell")){
-                                                System.out.println(Keys.get(i) + " ||" + Values.get(i));
-
-                                            }
-                                            break;
-
-                                        case 1:
-                                            if(Values.get(i).equals("Monster")){
-                                                System.out.println(Keys.get(i) + " || " + Values.get(i));
-                                            }
-                                            break;
-
-                                        case 2:
-                                            if(Values.get(i).equals("Trap")){
-                                                System.out.println(Keys.get(i) + " || " + Values.get(i));
-                                            }
-                                            break;
-                                    }
-                                }
-                            }
-                                System.out.println("User has:" +  UserDeckOfCards.size() + "Cards");
-                            break;
-                        case 5:
-                            for (String Key : Deck.keySet()){
-                                AllExistingKeys.add(Key);
-                            }
-                            for(String Value : Deck.values()){
-                                AllExistingValues.add(Value);
-                            }
-
-                            Collections.sort(AllExistingValues);
-                            for(int i = 0; i < AllExistingKeys.size(); i++){
-                                System.out.println("The key: " + AllExistingKeys.get(i) + ", and the Value is: " + AllExistingValues.get(i));
-                            }
-                            break;
-                        case 6:
-                            for(String Key: Deck.keySet()){
-                                AllExistingKeys.add(Key);
-                            }
-                            for(String Value: Deck.values()){
-                                AllExistingValues.add(Value);
-                            }
-                            //This method go over the all deck, and search for the card that the user enter.
-                            for(int i = 0; i <=3; i++){
-                                for(int n = 0; n < AllExistingValues.size(); n++){
-                                    switch (i){
-                                        case 0:
-                                            if(AllExistingValues.get(n).equals("Spell")){
-                                                System.out.println(AllExistingKeys.get(n) + " || " + AllExistingValues.get(n));
-                                            }
-                                            break;
-                                        case 1:
-                                            if(AllExistingValues.get(n).equals("Monster")){
-                                                System.out.println(AllExistingKeys.get(n) + " || " + AllExistingValues.get(n));
-                                            }
-                                            break;
-                                        case 2:
-                                            if(AllExistingValues.get(n).equals("Trap")){
-                                                System.out.println(AllExistingKeys.get(n) + " || " + AllExistingValues.get(n));
-                                            }break;
-                                    }
-                                }
-                            }
-                            break;
-                            //The exit case
-                        case 7:
-                            System.out.println("Thanks for using it");
-
-                        default:
-                            System.out.println("Non valid option was choose");
-                    }
+                    System.out.println("  ");
+                    System.out.println("-------------------------------------------------------------");
                     break;
+
                 case 2:
+                    go1 = true;
+                    typeOfMap =2;
+                    System.out.println("Please an option");
                     Deck = MappingFactory.SetType("TreeMap");
                     UserDeckOfCards = MappingFactory.SetType("TreeMap");
-                    //Prints the second menu.
+                    System.out.println("-------------------------------------------------------------");
+                    System.out.println(" ");
                     System.out.println(menu2);
-                    String op2= sc.nextLine();
-                    //The whole options that the second menu have
-                    switch (Integer.parseInt(op2)){
-                        case 1:
-                            Scanner scanner = new Scanner(userCard);
-                            if(!Deck.containsKey(userCard.toUpperCase())){
-                                System.out.println("The card tat you enter does not exist");
-                                UserDeckOfCards.put(userCard.toUpperCase(), Deck.get(userCard.toUpperCase()));
-                                break;
-                            }
-                            //
-                        case 2:
-                            if(!UserDeckOfCards.containsKey(userCard.toUpperCase())){
-                                System.out.println("The card tat you enter does not exist");
-                                System.out.println(UserDeckOfCards.get(userCard.toUpperCase()));
-                                break;
-                            }
-
-                        case 3:
-                            for(String Key : UserDeckOfCards.values()){
-                                Keys.add(Key);
-                            }
-                            for(String values : UserDeckOfCards.values()){
-                                Values.add(values);
-                            }
-                            Collections.sort(Values);
-                            for (int i = 0; i < Keys.size(); i++) {
-                                System.out.println("Key: " + Keys.get(i) + ", Value: " + Values.get(i));
-                            }
-                            System.out.println("User has: " + UserDeckOfCards.size() + " Cards");
-                            break;
-
-                        case 4:
-                            for(String Key: UserDeckOfCards.values()){
-                                Values.add(Key);
-                            }
-
-                            for(String Value: UserDeckOfCards.values()){
-                                Values.add(Value);
-                            }
-                            for(int j=0; j <=3; j++){
-                                for(int i = 0; i < Values.size();i++){
-                                    switch (j){
-                                        case 0:
-                                            if(Values.get(i).equals("Spell")){
-                                                System.out.println(Keys.get(i) + " ||" + Values.get(i));
-
-                                            }break;
-                                    }
-                                }
-                            }
-                            System.out.println("User has:" +  UserDeckOfCards.size() + "Cards");
-                            break;
-                        case 5:
-                            for (String Key : Deck.keySet()){
-                                AllExistingKeys.add(Key);
-                            }
-                            for(String Value : Deck.values()){
-                                AllExistingValues.add(Value);
-                            }
-
-                            Collections.sort(AllExistingValues);
-                            for(int i = 0; i < AllExistingKeys.size(); i++){
-                                System.out.println("The key: " + AllExistingKeys.get(i) + ", and the Value is: " + AllExistingValues.get(i));
-                            }
-                            break;
-                        case 6:
-                            for(String Key: Deck.keySet()){
-                                AllExistingKeys.add(Key);
-                            }
-                            for(String Value: Deck.values()){
-                                AllExistingValues.add(Value);
-                            }
-                            for(int i = 0; i <=3; i++){
-                                for(int n = 0; n < AllExistingValues.size(); n++){
-                                    switch (i){
-                                        case 0:
-                                            if(AllExistingValues.get(n).equals("Spell")){
-                                                System.out.println(AllExistingKeys.get(n) + " || " + AllExistingValues.get(n));
-                                            }
-                                            break;
-                                        case 1:
-                                            if(AllExistingValues.get(n).equals("Monster")){
-                                                System.out.println(AllExistingKeys.get(n) + " || " + AllExistingValues.get(n));
-                                            }
-                                            break;
-                                        case 2:
-                                            if(AllExistingValues.get(n).equals("Trap")){
-                                                System.out.println(AllExistingKeys.get(n) + " || " + AllExistingValues.get(n));
-                                            }break;
-                                    }
-                                }
-                            }
-                            break;
-                        case 7:
-                            System.out.println("Thanks for using it");
-
-                        default:
-                            System.out.println("Non valid option was choose");
-                    }
+                    System.out.println("  ");
+                    System.out.println("-------------------------------------------------------------");
                     break;
+
                 case 3:
-                    System.out.println(menu2);
+                    go1 = true;
+                    typeOfMap = 3;
+                    System.out.println("Please an option");
                     Deck = MappingFactory.SetType("LinkedHashMap");
                     UserDeckOfCards = MappingFactory.SetType("LinkedHashMap");
+                    System.out.println("-------------------------------------------------------------");
+                    System.out.println(" ");
                     System.out.println(menu2);
-                    String op3 = "";
-                    switch (Integer.parseInt(op3)){
-                        case 1:
-                            Scanner scanner = new Scanner(userCard);
-                            if(!Deck.containsKey(userCard.toUpperCase())){
-                                System.out.println("The card tat you enter does not exist");
-                                UserDeckOfCards.put(userCard.toUpperCase(), Deck.get(userCard.toUpperCase()));
-                                break;
-                            }
-                        case 2:
-                            if(!UserDeckOfCards.containsKey(userCard.toUpperCase())){
-                                System.out.println("The card tat you enter does not exist");
-                                System.out.println(UserDeckOfCards.get(userCard.toUpperCase()));
-                                break;
-                            }
+                    System.out.println("  ");
+                    System.out.println("-------------------------------------------------------------");
+                    break;
 
-                        case 3:
-                            for(String Key : UserDeckOfCards.values()){
-                                Keys.add(Key);
-                            }
-                            for(String values : UserDeckOfCards.values()){
-                                Values.add(values);
-                            }
-                            Collections.sort(Values);
-                            for (int i = 0; i < Keys.size(); i++) {
-                                System.out.println("Key: " + Keys.get(i) + ", Value: " + Values.get(i));
-                            }
-                            System.out.println("User has: " + UserDeckOfCards.size() + " Cards");
-                            break;
+                case 4:
+                    System.out.println("Goodbye");
+                    go1 = false;
+                    break;
 
-                        case 4:
-                            for(String Key: UserDeckOfCards.values()){
-                                Values.add(Key);
-                            }
+                default:
+                    System.out.println("Invalid option");
+                    return;
+            }
 
-                            for(String Value: UserDeckOfCards.values()){
-                                Values.add(Value);
-                            }
-                            for(int j=0; j <=3; j++){
-                                for(int i = 0; i < Values.size();i++){
-                                    switch (j){
-                                        case 0:
-                                            if(Values.get(i).equals("Spell")){
-                                                System.out.println(Keys.get(i) + " ||" + Values.get(i));
+        }
+        if(go1 = true){
+            System.out.println("  ");
+            String op1 = sc.nextLine();
+            System.out.println("  ");
+            switch (Integer.parseInt(op1)){
+                case 1:
+                    System.out.println("Please enter the name of the card:");
+                    String searchingCard = sc.nextLine();
+                    if(Deck.containsKey(searchingCard .toUpperCase())){
+                        UserDeckOfCards.put(searchingCard , Deck.get(searchingCard ));
+                    }else{
+                        System.out.println("That card doesn't exists");
+                    }
+                    break;
 
-                                            }break;
-                                    }
-                                }
-                            }
-                            System.out.println("User has:" +  UserDeckOfCards.size() + "Cards");
-                            break;
-                        case 5:
-                            for (String Key : Deck.keySet()){
-                                AllExistingKeys.add(Key);
-                            }
-                            for(String Value : Deck.values()){
-                                AllExistingValues.add(Value);
-                            }
+                case 2:
+                    System.out.println("Please enter the type of a card");
+                    searchingCard = sc.nextLine();
+                    if(Deck.containsKey(searchingCard.toUpperCase())){
+                        System.out.println("The card: "+ searchingCard.toUpperCase() +" ||Type: " + Deck.get(searchingCard.toUpperCase()));
+                    }else{
+                        System.out.println("The card doesn't exists");
+                    }
+                    break;
 
-                            Collections.sort(AllExistingValues);
-                            for(int i = 0; i < AllExistingKeys.size(); i++){
-                                System.out.println("The key: " + AllExistingKeys.get(i) + ", and the Value is: " + AllExistingValues.get(i));
-                            }
-                            break;
-                        case 6:
-                            for(String Key: Deck.keySet()){
-                                AllExistingKeys.add(Key);
-                            }
-                            for(String Value: Deck.values()){
-                                AllExistingValues.add(Value);
-                            }
-                            for(int i = 0; i <=3; i++){
-                                for(int n = 0; n < AllExistingValues.size(); n++){
-                                    switch (i){
-                                        case 0:
-                                            if(AllExistingValues.get(n).equals("Spell")){
-                                                System.out.println(AllExistingKeys.get(n) + " || " + AllExistingValues.get(n));
-                                            }
-                                            break;
-                                        case 1:
-                                            if(AllExistingValues.get(n).equals("Monster")){
-                                                System.out.println(AllExistingKeys.get(n) + " || " + AllExistingValues.get(n));
-                                            }
-                                            break;
-                                        case 2:
-                                            if(AllExistingValues.get(n).equals("Trap")){
-                                                System.out.println(AllExistingKeys.get(n) + " || " + AllExistingValues.get(n));
-                                            }break;
-                                    }
-                                }
-                            }
-                            break;
-                        case 7:
-                            System.out.println("Thanks for using it");
-
-                        default:
-                            System.out.println("Non valid option was choose");
+                case 3:
+                    System.out.println("Now Im going to show all the cards that the user have in his deck");
+                    for(String card: Deck.keySet()){
+                        System.out.println("The card: " + card + "||Type: " + Deck.get(card) + "||Quantity of the cards: " + cardsQuantity.get(card));
                     }
                     break;
 
                 case 4:
-                    System.out.println("Godbye, and thanks for using my program!!!");
+                    System.out.println("Now Im going to show all the cards that the user have in his deck, but ordered by type of card");
+                    if(typeOfMap == 1){
+                        System.out.println(sortedHashMapUserDeck);
+                    }
+                    else if(typeOfMap == 2){
+                        System.out.println(sortedTreeMapUserDeck);
+                    }
+                    else if(typeOfMap == 3){
+                        System.out.println(sortedLinkedHashMapUserDeck);
+                    }
                     break;
+
+                case 5:
+                    System.out.println("Now Im going to show all existing cards");
+                    for(String card: Deck.keySet()){
+                        System.out.println("The card: " + card + "||Type: " + Deck.get(card));
+                    }
+                    break;
+
+                case 6:
+                    if(typeOfMap == 1){
+                        System.out.println(sortedHashMapDeck);
+                    }
+                    else if(typeOfMap == 2){
+                        System.out.println(sortedTreeMapDeck);
+                    }
+                    else if(typeOfMap == 3){
+                        System.out.println(sortedLinkedHashMapDeck);
+                    }
+                    break;
+
+                case 7:
+                    System.out.println("Goodbye");
+                    break;
+
                 default:
-                    System.out.println("Ingrese una opcion valida!!!");
+                    System.out.println("Invalid option");
                     return;
             }
         }
-        else{
-            return;
-        }
-
     }
 }
